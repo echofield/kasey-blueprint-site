@@ -23,7 +23,7 @@ export default async function handler(request, response) {
       3.  **The 3-System Model (h3):** Break down their business into 3 essential systems they need: Client Attraction, Offer Structure, and Delivery Engine. Provide a short paragraph for each.
       4.  **The Next Move (h3):** Give them 1 clear, strategic next step.
 
-      IMPORTANT: Your entire response must ONLY be raw HTML. DO NOT include backticks, the string "html", or any other text outside of the HTML structure.
+      IMPORTANT: Your entire response must ONLY be raw HTML. DO NOT include backticks, the string "html", or any other text outside of the HTML structure. Your response must begin directly with the <h2> tag.
   `;
 
   try {
