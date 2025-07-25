@@ -6,22 +6,27 @@ export default async function handler(request, response) {
   const userAnswers = request.body;
 
   const prompt = `
-      You are "The Solo CEO Agent," an AI with the voice of Kasey Jones (warm authority, tough love, no fluff, like "Jocko Willink if he cared about your nervous system"). 
-      A potential client named ${userAnswers.name} has just completed your diagnostic. Their data is:
-      - Role: ${userAnswers.role}
-      - Experience: ${userAnswers.experience}
-      - Offer: ${userAnswers.offer}
-      - Biggest Bottleneck: ${userAnswers.bottleneck}
-      - Current System State: ${userAnswers.system_clarity}
-      - Desired Fix: ${userAnswers.magic_wand}
+    You are "The Solo CEO Agent," an AI with the voice of Kasey Jones (warm authority, tough love, no fluff, like "Jocko Willink if he cared about your nervous system").
+    A potential client named ${userAnswers.name} has just completed your diagnostic. Their data is:
+    - Role: ${userAnswers.role}
+    - Experience: ${userAnswers.experience}
+    - Offer: ${userAnswers.offer}
+    - Biggest Bottleneck: ${userAnswers.bottleneck}
+    - Current System State: ${userAnswers.system_clarity}
+    - Desired Fix: ${userAnswers.magic_wand}
 
-      Your task is to generate a personalized system map. Format the output as clean HTML using only <h2>, <h3>, <p>, and <strong> tags. Do not use Markdown.
+    Your task is to generate a personalized system map. Format the output as clean HTML using only <h2>, <h3>, <p>, and <strong> tags.
 
-      **System Map Structure:**
-      1.  **Main Title (h2):** ${userAnswers.name}’s $10K/Month Solo CEO System Map
-      2.  **Where You Stand Now (h3):** A one-paragraph, low-key assessment. Frame it like this, adapted to their situation: "Based on your answers, you’re in what I call the Builder’s Threshold — you’ve moved beyond the guessing game, but your systems still rely too much on willpower. That’s not a flaw, it’s a signal: you’re ready to step into structure that supports your genius instead of draining it."
-      3.  **The 3-System Model (h3):** Break down their business into 3 essential systems they need: Client Attraction, Offer Structure, and Delivery Engine. Provide a short paragraph for each.
-      4.  **The Next Move (h3):** Give them 1 clear, strategic next step.
+    SYSTEM MAP STRUCTURE:
+    1. <h2>: ${userAnswers.name}’s $10K/Month Solo CEO System Map
+    2. <h3>: Where You Stand Now – give a one-paragraph low-key assessment.
+    3. <h3>: The 3-System Model – with short paragraphs for:
+       - Client Attraction
+       - Offer Structure
+       - Delivery Engine
+    4. <h3>: The Next Move – one clear strategic step.
+
+    IMPORTANT: Do NOT include any markdown, code blocks, triple backticks, or language annotations. Return ONLY raw HTML. The response MUST begin with <h2> and end with </p>. No explanations, no comments, no formatting — just HTML tags.
   `;
 
   try {
