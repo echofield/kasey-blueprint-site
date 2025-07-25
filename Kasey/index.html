@@ -106,6 +106,47 @@
             min-width: 120px;
             padding: 0.75rem;
         }
+        
+        /* --- NEW BLUEPRINT STYLES --- */
+        .blueprint-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            max-width: 800px;
+            margin: 2rem auto;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+            text-align: left;
+        }
+
+        .blueprint-container h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #111;
+        }
+
+        .blueprint-container h3 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .blueprint-container p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .blueprint-container strong {
+            font-weight: 600;
+            color: #000;
+        }
+        /* --- END BLUEPRINT STYLES --- */
 
     </style>
 </head>
@@ -141,7 +182,7 @@
                 <div class="pt-12">
                     <div class="container-button">
                         <a href="#funnel-section" id="start-audit-btn" class="button">
-                            <div class="text">Kasey Blueprint</div>
+                            <div class="text">Generate Your System Map</div>
                         </a>
                     </div>
                 </div>
@@ -301,12 +342,9 @@
             
             function showAIResults(answers, blueprintHtml) {
                 const html = `
-                    <div class="p-6 md:p-10 border border-gray-300 rounded-lg bg-white/90 backdrop-blur-sm shadow-xl">
-                        <div class="text-gray-800 space-y-4 text-lg leading-relaxed">
-                            ${blueprintHtml}
-                        </div>
-                        
-                        <div class="mt-10 pt-8 border-t border-gray-300 text-center">
+                    <div class="blueprint-container">
+                        ${blueprintHtml}
+                        <div class="mt-10 pt-8 border-t border-gray-200 text-center">
                              <h3 class="text-2xl font-bold text-gray-800">Your blueprint is alive. Now you choose the path.</h3>
                              <p class="mt-4 text-gray-600">Want me to build the system for you — or co-create your own Solo CEO agent so it works while you sleep?</p>
                              <div id="cta-buttons" class="mt-8 flex flex-col md:flex-row gap-4 justify-center">
