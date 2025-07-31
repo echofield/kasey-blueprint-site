@@ -3,186 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLO CEO SYSTEM MAP - System Diagnostic</title>
+    <title>POV Extrovert - Get Your Score</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ease: cubic-bezier(0.5, 0, 0.3, 1);
-            --ease-elastic: cubic-bezier(0.5, 2, 0.3, 0.8);
+            --background: #FAFAFA;
+            --foreground: #303030;
+            --muted: #545454;
+            --accent: #FF6B6B;
+            --accent-soft: #ff6b6b33;
+            --border: #E4E4E7;
+            --card-bg: #FFFFFF;
         }
 
         body {
+            background-color: var(--background);
+            color: var(--foreground);
             font-family: 'Inter', sans-serif;
-            background-color: #f5f5f5;
-            background-image: linear-gradient(147deg, #f5f5f5 0%, #fffafa 74%);
-            color: #1f2937;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .font-mono { font-family: 'IBM Plex Mono', monospace; }
         
-        /* Modal Animation */
-        .modal-overlay { transition: opacity 0.3s ease-in-out; }
-        .modal-content { transition: all 0.3s ease-in-out; }
-        .modal-overlay.opacity-0 .modal-content { transform: translateY(-20px); }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1200px;
+            height: 1200px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--accent-soft) 0%, rgba(250,250,250,0) 60%);
+            z-index: -1;
+        }
+
+        /* New Button Styles */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            border: 1px solid var(--border); padding: 12px 28px; font-size: 1rem;
+            font-weight: 500; border-radius: 999px; color: var(--foreground);
+            background-color: var(--card-bg); transition: all 0.3s ease;
+            text-decoration: none; cursor: pointer;
+        }
+        .btn:hover { border-color: var(--muted); }
+        .btn-primary {
+            background: var(--accent); border-color: var(--accent);
+            color: #FFFFFF; font-weight: 600;
+        }
+        .btn-primary:hover { background-color: #e94e77; border-color: #e94e77; }
+        .btn-lg { padding: 16px 40px; font-size: 1.125rem; }
 
         /* Form Styling */
-        .form-radio:checked + label {
-            border-color: #a3e635;
-            box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.5);
-            background-color: rgba(163, 230, 53, 0.05);
-        }
-        
-        .form-input {
-            font-size: 1.125rem; padding: 0.8em; outline: none; border: 2px solid #D1D5DB; background-color: #f9fafb; border-radius: 8px; width: 100%; color: #111827; transition: all 0.3s ease;
-        }
-        .form-input:focus {
-            border-color: #a3e635;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.3);
-        }
-        .form-label {
-            display: block;
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-            color: #374151;
-        }
-        
         .form-group {
-            opacity: 0; visibility: hidden; position: absolute; width: 100%; transition: opacity 0.4s ease-in-out, visibility 0.4s;
+            opacity: 0; visibility: hidden; position: absolute; width: 100%;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s;
         }
         .form-group.active {
-            opacity: 1; visibility: visible; position: relative; animation: slideInUp 0.5s ease-out;
+            opacity: 1; visibility: visible; position: relative;
+            animation: slideInUp 0.5s ease-out;
         }
         @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-        .animate-shake { animation: shake 0.3s ease-in-out; }
-        
-        /* Button Styles */
-        .container-button {
-            position: relative;
-            display: inline-block;
+        .form-input, textarea.form-input {
+            width: 100%; padding: 14px; margin-bottom: 1rem; border: 1px solid var(--border);
+            border-radius: 8px; background-color: var(--card-bg); color: var(--foreground);
+            font-size: 1rem; transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus, textarea.form-input:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+        .form-radio:checked + label {
+            border-color: var(--accent);
+            background-color: var(--accent-soft);
+            color: var(--foreground);
+            font-weight: 600;
+        }
+        .form-label {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--foreground);
         }
 
-        .button {
-            position: relative; padding: 6px; display: flex;
-            background: linear-gradient(to top, #c6ff55, #fcfa60, #c6ff55);
-            background-position: 0 0; background-size: 212px 248px;
-            border-radius: 50px; border: none; outline: none;
-            box-shadow: 0 4px 1px #a8b800, inset 0 2px 2px 2px rgba(255, 255, 255, 0.5), 6px 12px 6px 2px rgba(0, 0, 0, 0.2);
-            transform: translateY(-6px);
-            transition: all 0.3s var(--ease-elastic);
-            animation: bg-animated 5s linear infinite;
-            cursor: pointer; overflow: hidden; z-index: 999;
-        }
-
-        @keyframes bg-animated { to { background-position: 0 140%; } }
-
-        .button:after {
-            content: ""; position: absolute; width: 80px; height: 100px; top: 50%; left: 0px;
-            background-image: linear-gradient( to left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.8) );
-            transform: translate(-90px, -50%) rotate(25deg);
-        }
-
-        .button:hover { animation-play-state: paused; }
-        .button:hover::after { transform: translate(300px, -50%) rotate(25deg); transition: all 0.5s var(--ease); }
-        .button:active { transform: translateY(-2px); box-shadow: none; }
-        .button:active .text { box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.7), inset 0 3px 0 rgba(0, 0, 0, 0.1), inset 2px 6px 4px 1px rgba(0, 0, 0, 0.1); }
-
-        .button .text {
-            display: flex; align-items: center; justify-content: center;
-            min-width: 200px; color: #494949; padding: 1rem;
-            font-size: 18px; line-height: 18px; font-weight: 700;
-            text-shadow: 1px 1.5px 0 rgba(255, 255, 255, 0.5);
-            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.8), inset 0 3px 0 rgba(0, 0, 0, 0.15), inset 2px 6px 4px 2px rgba(0, 0, 0, 0.15);
-            border-radius: 50px; transition: all 0.1s var(--ease);
-        }
-        
-        .button.button-small .text {
-            min-width: 120px;
-            padding: 0.75rem;
-        }
-        
-        /* --- NEW BLUEPRINT STYLES --- */
-        .blueprint-container {
-            background: white;
-            border-radius: 12px;
+        /* Result Styles */
+        .result-container {
+            background: var(--card-bg);
+            border-radius: 16px;
             padding: 2.5rem;
             max-width: 800px;
             margin: 2rem auto;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.05);
             text-align: left;
+            border: 1px solid var(--border);
         }
-
-        .blueprint-container h2 {
-            font-family: 'IBM Plex Mono', monospace;
+        .result-container h2 {
+            font-family: 'Inter', sans-serif;
             font-size: 1.8rem;
             margin-bottom: 1rem;
-            color: #111;
+            color: var(--foreground);
         }
-
-        .blueprint-container h3 {
+        .result-container h3 {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 1.4rem;
             margin-top: 2rem;
             margin-bottom: 0.5rem;
-            color: #333;
-            border-bottom: 2px solid #f0f0f0;
+            color: var(--foreground);
+            border-bottom: 1px solid var(--border);
             padding-bottom: 0.5rem;
         }
-
-        .blueprint-container p {
+        .result-container p {
             font-size: 1.1rem;
             margin-bottom: 1rem;
             line-height: 1.7;
-            color: #374151;
+            color: var(--muted);
         }
-
-        .blueprint-container strong {
+        .result-container strong {
             font-weight: 600;
-            color: #000;
+            color: var(--accent);
         }
-        /* --- END BLUEPRINT STYLES --- */
-
+        .score-display {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        
+        /* Preloader Styles */
+        #loader-container {
+            position: fixed; inset: 0; z-index: 100; display: flex;
+            align-items: center; justify-content: center;
+            background-color: var(--background);
+            transition: opacity 0.5s ease-in-out;
+        }
+        .loader { width: 80px; height: 50px; position: relative; }
+        .loader-text {
+            position: absolute; top: 0; padding: 0; margin: 0;
+            color: var(--accent); animation: text_713 3.5s ease both infinite;
+            font-size: .8rem; letter-spacing: 1px; font-family: 'IBM Plex Mono', monospace;
+        }
+        .load {
+            background-color: var(--accent); border-radius: 50px; display: block;
+            height: 16px; width: 16px; bottom: 0; position: absolute;
+            transform: translateX(64px); animation: loading_713 3.5s ease both infinite;
+        }
+        .load::before {
+            position: absolute; content: ""; width: 100%; height: 100%;
+            background-color: #ffb8b8; border-radius: inherit;
+            animation: loading2_713 3.5s ease both infinite;
+        }
+        @keyframes text_713 {
+            0% { letter-spacing: 1px; transform: translateX(0px); }
+            40% { letter-spacing: 2px; transform: translateX(26px); }
+            80% { letter-spacing: 1px; transform: translateX(32px); }
+            90% { letter-spacing: 2px; transform: translateX(0px); }
+            100% { letter-spacing: 1px; transform: translateX(0px); }
+        }
+        @keyframes loading_713 {
+            0% { width: 16px; transform: translateX(0px); }
+            40% { width: 100%; transform: translateX(0px); }
+            80% { width: 16px; transform: translateX(64px); }
+            90% { width: 100%; transform: translateX(0px); }
+            100% { width: 16px; transform: translateX(0px); }
+        }
+        @keyframes loading2_713 {
+            0% { transform: translateX(0px); width: 16px; }
+            40% { transform: translateX(0%); width: 80%; }
+            80% { width: 100%; transform: translateX(0px); }
+            90% { width: 80%; transform: translateX(15px); }
+            100% { transform: translateX(0px); width: 16px; }
+        }
     </style>
 </head>
-<body class="antialiased">
+<body class="overflow-x-hidden">
 
-    <div>
-        <nav class="fixed top-0 left-0 right-0 p-6 z-10 flex justify-between">
-            <button id="my-story-btn" class="font-mono text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">My Story</button>
-            <a href="#funnel-section" class="font-mono text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">System Map</a>
-        </nav>
-
-        <div id="story-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none">
-            <div class="modal-content bg-white border border-gray-300 rounded-lg max-w-lg w-full p-8 text-center transform scale-100">
-                <h2 class="text-2xl font-bold text-lime-500 font-mono">Kasey's Story</h2>
-                <p class="text-gray-600 mt-6">For 5 years, I built a business that was a prison. Overworked and underpaid, I wasn't running the business, it was running me.</p>
-                <p class="text-gray-600 mt-4">Today, I run a 6-figure business with the best clients and work that feels like play.</p>
-                <div class="mt-8 container-button">
-                     <button id="close-story-btn" class="button">
-                        <div class="text">Close</div>
-                    </button>
-                </div>
-            </div>
+    <div id="loader-container">
+        <div class="loader">
+            <span class="loader-text">loading</span>
+            <span class="load"></span>
         </div>
+    </div>
 
-        <main class="container mx-auto px-4">
-            <section id="intro-section" class="min-h-screen flex flex-col items-center justify-center text-center py-20">
-                <h1 class="font-mono text-xl md:text-2xl text-lime-600 tracking-widest">SOLO CEO SYSTEM MAP</h1>
-                <p class="mt-8 text-2xl md:text-4xl font-bold text-gray-800 max-w-3xl">Stop being the bottleneck.<br>Start being the CEO.</p>
-                <div class="mt-12 text-lg text-gray-600 max-w-2xl space-y-4">
-                    <p>For <strong class="text-gray-900">Solopreneur Consultants</strong> tired of the referral rollercoaster and <strong class="text-gray-900">Corporate Pros</strong> ready to build something real.</p>
-                    <p>This is not another course. It's a diagnostic. A map for a systematic, scalable solo business.</p>
-                </div>
-                <div class="pt-12">
-                    <div class="container-button">
-                        <a href="#funnel-section" id="start-audit-btn" class="button">
-                            <div class="text">Generate Your System Map</div>
+    <div id="page-wrapper" class="opacity-0 transition-opacity duration-500">
+        <main class="container mx-auto px-6">
+            <section id="intro-section" class="hero-section min-h-screen flex flex-col items-center justify-center text-center py-20 relative">
+                <div class="max-w-3xl">
+                    <h1 class="font-mono text-xl md:text-2xl text-muted tracking-widest">POV: YOU'RE AN EXTROVERT</h1>
+                    <p class="mt-8 text-4xl md:text-6xl font-bold text-foreground max-w-3xl tracking-tighter">Let’s see how extroverted you really are…</p>
+                    <div class="mt-12 text-lg text-muted max-w-2xl mx-auto space-y-4">
+                        <p>You’re not shy. <strong>You’re just underactivated.</strong></p>
+                        <p>This ~2-minute audit reveals your true social energy. No fluff, just facts.</p>
+                    </div>
+                    <div class="mt-12">
+                        <a href="#funnel-section" id="start-audit-btn" class="btn btn-primary btn-lg">
+                            Get Your Extrovert Score
                         </a>
                     </div>
                 </div>
@@ -197,48 +217,51 @@
     <script type="module">
         document.addEventListener('DOMContentLoaded', () => {
             const funnelContainer = document.getElementById('funnel-container');
-            const storyModal = document.getElementById('story-modal');
-            const myStoryBtn = document.getElementById('my-story-btn');
-            const closeStoryBtn = document.getElementById('close-story-btn');
-
+            const pageWrapper = document.getElementById('page-wrapper');
+            const loaderContainer = document.getElementById('loader-container');
             let currentStep = 0;
+            let userResult = {};
+            
+            window.addEventListener('load', () => {
+                loaderContainer.style.opacity = '0';
+                setTimeout(() => {
+                    loaderContainer.style.display = 'none';
+                    pageWrapper.classList.remove('opacity-0');
+                }, 500);
+            });
+            
+            // Added the two new open-ended questions
             const questions = [
-                { id: 'name', type: 'text', prompt: "What's your name?" },
-                { id: 'email', type: 'email', prompt: "What's your email for the report?" },
-                { id: 'role', type: 'radio', prompt: "What’s your current role?", options: ['Coach / Consultant', 'Agency / Freelancer', 'Corporate Escapee', 'Other'] },
-                { id: 'experience', type: 'radio', prompt: 'How long have you been in business?', options: ['< 1 year', '1–3 years', '3+ years'] },
-                { id: 'offer', type: 'textarea', prompt: "Describe your current offer in one sentence." },
-                { id: 'bottleneck', type: 'radio', prompt: 'Primary bottleneck?', options: ['Inconsistent Leads', 'No Signature Offer', 'Manual Delivery', 'Burnout / Energy Leaks'] },
-                { id: 'system_clarity', type: 'radio', prompt: 'How clear is your business system?', options: ['It’s all in my head', 'It’s duct-taped', 'It’s manual but documented', 'I’m not sure'] },
-                { id: 'magic_wand', type: 'textarea', prompt: 'If you could fix ONE thing instantly, what is it?' }
+                { id: 'social_energy', type: 'radio', prompt: "After a big social event, you feel:", options: ['Totally drained and need to be alone', 'A little tired, but happy', 'Energized and ready for more!'] },
+                { id: 'party_behavior', type: 'radio', prompt: "At a party where you don't know many people, you're most likely to:", options: ['Find a quiet corner and observe', 'Stick close to the one person you know', 'Introduce yourself to someone new'] },
+                { id: 'attention', type: 'radio', prompt: "Being the center of attention makes you feel:", options: ['Deeply uncomfortable', 'Okay with it in small doses', 'Secretly (or not-so-secretly) thrilled'] },
+                { id: 'weekend_plan', type: 'radio', prompt: "Your ideal weekend involves:", options: ['A quiet night in, just for you', 'A small get-together with close friends', 'A big party or social event'] },
+                { id: 'story_telling', type: 'radio', prompt: "When you tell a story, you tend to:", options: ['Keep it short and to the point', 'Add some fun details and gestures', 'Put on a full performance, voices and all'] },
+                { id: 'goal', type: 'radio', prompt: "Why do you want to become more extroverted?", options: ['To connect more deeply', 'To express myself freely', 'To grow professionally', 'For fun, why not!'] },
+                { id: 'self_image', type: 'radio', prompt: "What word best describes how you see yourself right now?", options: ['Creative', 'Shy', 'Curious', 'Confident', 'Invisible'] },
+                { id: 'social_blockers', type: 'textarea', prompt: "What's holding you back from being more social?" },
+                { id: 'favorite_energy', type: 'textarea', prompt: "Describe your energy after spending time with your favorite people." },
+                { id: 'name', type: 'text', prompt: "Finally, what should we call you?" },
             ];
             const totalSteps = questions.length;
-
-            function createButton(id, text, isSubmit = false, isSmall = false) {
-                return `
-                    <div class="container-button">
-                        <button type="${isSubmit ? 'submit' : 'button'}" id="${id}" class="button ${isSmall ? 'button-small' : ''}">
-                            <div class="text">${text}</div>
-                        </button>
-                    </div>`;
-            }
 
             function renderForm() {
                 const formGroupsHtml = questions.map((q, index) => {
                     let groupContent = '';
-                    if (q.type === 'text' || q.type === 'email' || q.type === 'textarea') {
+                    if (q.type === 'text' || q.type === 'textarea') {
+                        const inputElement = q.type === 'textarea'
+                            ? `<textarea id="q-${q.id}" name="${q.id}" required class="form-input" rows="4" placeholder="Be as detailed as you like..."></textarea>`
+                            : `<input type="text" id="q-${q.id}" name="${q.id}" required class="form-input">`;
+                        
                         groupContent = `
                             <label for="q-${q.id}" class="form-label">${q.prompt}</label>
-                            ${q.type === 'textarea'
-                                ? `<textarea rows="4" id="q-${q.id}" name="${q.id}" required class="form-input"></textarea>`
-                                : `<input type="${q.type}" id="q-${q.id}" name="${q.id}" required class="form-input">`
-                            }
+                            ${inputElement}
                         `;
                     } else if (q.type === 'radio') {
                         const optionsHtml = q.options.map((opt, i) => `
                             <div>
-                                <input type="radio" name="${q.id}" id="${q.id}-${i}" value="${opt}" class="hidden form-radio">
-                                <label for="${q.id}-${i}" class="block w-full cursor-pointer bg-white border-2 border-gray-300 rounded-lg p-4 text-lg text-gray-800 hover:border-lime-500 transition-colors duration-300">${opt}</label>
+                                <input type="radio" name="${q.id}" id="${q.id}-${i}" value="${opt}" class="hidden form-radio" required>
+                                <label for="${q.id}-${i}" class="block w-full cursor-pointer bg-card-bg border-2 border-border rounded-lg p-4 text-lg text-foreground hover:border-accent transition-colors duration-200">${opt}</label>
                             </div>
                         `).join('');
                         groupContent = `<label class="form-label">${q.prompt}</label><div class="space-y-3">${optionsHtml}</div>`;
@@ -249,13 +272,12 @@
                 const formHtml = `
                     <form id="audit-form" class="relative min-h-[400px]">
                         ${formGroupsHtml}
-                        <div class="form-navigation mt-8 flex justify-between items-center">
-                            <button type="button" id="prev-btn" class="font-mono text-gray-500 hover:text-gray-900 transition-colors" style="display: none;">Back</button>
-                            <span id="progress-indicator" class="font-mono text-gray-500">${currentStep + 1} / ${totalSteps}</span>
-                            <div id="next-btn-wrapper">${createButton('next-btn', 'Next', false, true)}</div>
-                            <div id="submit-btn-wrapper" style="display: none;">${createButton('submit-btn', 'Generate System Map', true)}</div>
-                        </div>
-                    </form>`;
+                    </form>
+                    <div id="form-navigation" class="mt-8 flex justify-between items-center">
+                        <button type="button" id="prev-btn" class="btn" style="display: none;">← Back</button>
+                        <span id="progress-indicator" class="font-mono text-muted">${currentStep + 1} / ${totalSteps}</span>
+                        <button type="button" id="next-btn" class="btn btn-primary">Next →</button>
+                    </div>`;
                 
                 funnelContainer.innerHTML = formHtml;
                 addFormEventListeners();
@@ -264,62 +286,74 @@
             function updateFormView() {
                 document.querySelectorAll('.form-group').forEach((group, index) => group.classList.toggle('active', index === currentStep));
                 document.getElementById('progress-indicator').textContent = `${currentStep + 1} / ${totalSteps}`;
-                document.getElementById('prev-btn').style.display = currentStep > 0 ? 'block' : 'none';
-                document.getElementById('next-btn-wrapper').style.display = currentStep < totalSteps - 1 ? 'block' : 'none';
-                document.getElementById('submit-btn-wrapper').style.display = currentStep === totalSteps - 1 ? 'block' : 'none';
+                document.getElementById('prev-btn').style.display = currentStep > 0 ? 'inline-flex' : 'none';
+                
+                const nextBtn = document.getElementById('next-btn');
+                if (nextBtn) {
+                    nextBtn.textContent = currentStep === totalSteps - 1 ? 'Get My Score →' : 'Next →';
+                }
             }
 
             function handleNext() {
-                const input = document.querySelector(`.form-group[data-step="${currentStep}"]`).querySelector('input, textarea');
-                if (input && !input.value.trim()) {
-                    input.classList.add('animate-shake');
-                    setTimeout(() => input.classList.remove('animate-shake'), 300);
+                const currentGroup = document.querySelector(`.form-group[data-step="${currentStep}"]`);
+                const input = currentGroup.querySelector('input[required], textarea[required]');
+                
+                let isValid = true;
+                if (input.type === 'radio') {
+                    if (!document.querySelector(`input[name="${input.name}"]:checked`)) {
+                        isValid = false;
+                    }
+                } else {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                    }
+                }
+
+                if (!isValid) {
+                    currentGroup.style.animation = 'shake 0.3s';
+                    setTimeout(() => currentGroup.style.animation = '', 300);
                     return;
                 }
-                if (currentStep < totalSteps - 1) { currentStep++; updateFormView(); }
+
+                if (currentStep < totalSteps - 1) { 
+                    currentStep++; 
+                    updateFormView(); 
+                } else {
+                    handleFinalSubmit();
+                }
             }
 
             function addFormEventListeners() {
                 document.getElementById('next-btn')?.addEventListener('click', handleNext);
                 document.getElementById('prev-btn')?.addEventListener('click', () => { if (currentStep > 0) { currentStep--; updateFormView(); } });
-                document.getElementById('audit-form')?.addEventListener('submit', handleFinalSubmit);
-                document.querySelectorAll('input[type="text"], input[type="email"], textarea').forEach(input => {
+                
+                document.querySelectorAll('input[type="text"], textarea').forEach(input => {
                     input.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
-                            const nextBtn = document.getElementById('next-btn');
-                            const submitBtn = document.getElementById('submit-btn');
-                            if (submitBtn && submitBtn.offsetParent !== null) { // Check if submit is visible
-                                document.getElementById('audit-form').requestSubmit();
-                            } else if (nextBtn) {
-                                handleNext();
-                            }
+                            handleNext();
                         }
                     });
                 });
-                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.addEventListener('change', () => setTimeout(handleNext, 200)));
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.addEventListener('change', () => setTimeout(handleNext, 250)));
             }
 
-            async function handleFinalSubmit(e) {
-                e.preventDefault();
-                const userAnswers = Object.fromEntries(new FormData(e.target).entries());
-                const submitButton = document.getElementById('submit-btn');
-                let intervalId;
+            async function handleFinalSubmit() {
+                const form = document.getElementById('audit-form');
+                const userAnswers = Object.fromEntries(new FormData(form).entries());
                 
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    const textElement = submitButton.querySelector('.text');
-                    const loadingMessages = ["Calibrating systems...", "Mapping bottlenecks...", "Generating insights..."];
-                    let messageIndex = 0;
-                    textElement.textContent = loadingMessages[messageIndex];
-                    intervalId = setInterval(() => {
-                        messageIndex = (messageIndex + 1) % loadingMessages.length;
-                        textElement.textContent = loadingMessages[messageIndex];
-                    }, 1500);
-                }
+                funnelContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center text-center min-h-[400px]">
+                        <div class="loader">
+                            <span class="loader-text">analyzing</span>
+                            <span class="load"></span>
+                        </div>
+                        <p class="font-mono text-muted mt-6">Auditing your social energy...</p>
+                    </div>`;
                 
                 try {
-                    const response = await fetch('/api/generate-blueprint', {
+                    const apiURL = new URL('/api/generate-extrovert-score', window.location.origin);
+                    const response = await fetch(apiURL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(userAnswers)
@@ -329,62 +363,48 @@
                         throw new Error(`API request failed with status ${response.status}`);
                     }
 
-                    const result = await response.json();
-                    showAIResults(userAnswers, result.blueprintHtml);
+                    userResult = await response.json();
+                    showAIResults(userResult.resultHtml);
 
                 } catch (error) {
                     console.error("Error during submission process: ", error);
-                    funnelContainer.innerHTML = `<div class="text-center p-8"><h3 class="text-2xl font-bold text-red-600">ERROR</h3><p class="text-lg text-gray-600 mt-4">Could not generate your system map. Please try again.</p></div>`;
-                } finally {
-                    if (intervalId) clearInterval(intervalId);
+                    funnelContainer.innerHTML = `<div class="text-center p-8"><h3 class="text-2xl font-bold text-red-600">ERROR</h3><p class="text-lg text-gray-600 mt-4">Could not generate your score. Please try again.</p></div>`;
                 }
             }
             
-            function showAIResults(answers, blueprintHtml) {
+            function showAIResults(resultHtml) {
                 const html = `
-                    <div class="blueprint-container">
-                        ${blueprintHtml}
-                        <div class="mt-10 pt-8 border-t border-gray-200 text-center">
-                             <h3 class="text-2xl font-bold text-gray-800">Your blueprint is alive. Now you choose the path.</h3>
-                             <p class="mt-4 text-gray-600">Want me to build the system for you — or co-create your own Solo CEO agent so it works while you sleep?</p>
-                             <div id="cta-buttons" class="mt-8 flex flex-col md:flex-row gap-4 justify-center">
-                                ${createButton('dfy-btn', 'Build It For Me')}
-                                ${createButton('dwy-btn', 'Co-Create My Agent')}
+                    <div class="result-container">
+                        ${resultHtml}
+                        <div class="mt-10 pt-8 border-t border-border text-center">
+                             <h3 class="text-2xl font-bold text-foreground">Want to go further?</h3>
+                             <p class="mt-4 text-muted">Unlock the <strong>POVEXTROVERT Bootcamp</strong>. A 5-day challenge to activate your social self.</p>
+                             <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <a href="https://gumroad.com" target="_blank" class="btn btn-primary btn-lg w-full sm:w-auto">Unlock The Bootcamp (€27)</a>
+                                <button id="share-btn" class="btn w-full sm:w-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                                    Share Result
+                                </button>
                              </div>
                         </div>
                     </div>`;
                 funnelContainer.innerHTML = html;
-                funnelContainer.classList.add('fade-in');
-
-                document.getElementById('dfy-btn')?.addEventListener('click', () => handleCtaClick('Done-For-You'));
-                document.getElementById('dwy-btn')?.addEventListener('click', () => handleCtaClick('Co-Create My Agent'));
+                document.getElementById('share-btn')?.addEventListener('click', handleShare);
             }
 
-            function handleCtaClick(choice) {
-                console.log(`Lead expressed interest in: ${choice}`);
-                const ctaSection = funnelContainer.querySelector('.border-t');
-                ctaSection.innerHTML = `
-                    <h3 class="text-2xl font-bold text-gray-800">Thank you.</h3>
-                    <p class="mt-4 text-gray-600">We've noted your interest and will be in touch at your email with the next steps.</p>
-                `;
-            }
-
-            function toggleModal(show) {
-                const modal = document.getElementById('story-modal');
-                const content = modal.querySelector('.modal-content');
-                if (show) {
-                    modal.classList.remove('opacity-0', 'pointer-events-none');
-                    content.classList.remove('opacity-0', 'scale-95');
+            function handleShare() {
+                if (navigator.share && userResult.shareData) {
+                    navigator.share({
+                        title: 'My Extrovert Archetype',
+                        text: `I took the POV Extrovert test and I'm a ${userResult.shareData.archetype}! What's your social energy?`,
+                        url: window.location.href
+                    }).then(() => {
+                        console.log('Thanks for sharing!');
+                    }).catch(console.error);
                 } else {
-                    modal.classList.add('opacity-0');
-                    content.classList.add('opacity-0', 'scale-95');
-                    setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+                    alert('Sharing is supported on mobile devices. Try sharing the page URL!');
                 }
             }
-            
-            myStoryBtn?.addEventListener('click', () => toggleModal(true));
-            closeStoryBtn?.addEventListener('click', () => toggleModal(false));
-            storyModal?.addEventListener('click', (e) => { if (e.target === storyModal) toggleModal(false); });
 
             renderForm();
         });
